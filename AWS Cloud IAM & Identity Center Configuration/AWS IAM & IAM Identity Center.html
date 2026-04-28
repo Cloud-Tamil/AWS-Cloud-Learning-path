@@ -1,0 +1,743 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>AWS IAM &amp; IAM Identity Center</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="fccfa456-b6e2-494e-9098-dc7f7b3740eb" class="page sans"><header><h1 class="page-title" dir="auto">AWS IAM &amp; IAM Identity Center</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="a68ab76d-6555-4193-b374-66d598ed7c54" class="">1) Scope &amp; audience</h2></div><div style="display:contents" dir="auto"><ul id="cd9ef5b7-78a5-41c6-863b-a12efee3c07d" class="bulleted-list"><li style="list-style-type:disc"><strong>Audience:</strong> Cloud/DevOps/Security engineers and admins</li></ul></div><div style="display:contents" dir="auto"><ul id="01a4bcf4-44e7-4ad5-ba34-89fe2c1d9d9e" class="bulleted-list"><li style="list-style-type:disc"><strong>Scope:</strong> Human access to AWS accounts (console + CLI) using:<div style="display:contents" dir="auto"><ul id="ef2a6a9a-64d5-4708-8c9a-8320af19bf82" class="bulleted-list"><li style="list-style-type:circle"><strong>IAM Identity Center</strong> for workforce SSO across multiple AWS accounts (recommended)</li></ul></div><div style="display:contents" dir="auto"><ul id="94115933-6242-4862-bd72-9d84569d16d0" class="bulleted-list"><li style="list-style-type:circle"><strong>IAM (direct)</strong> for service roles, break-glass, and limited cases</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><h2 id="d734c217-4e55-4bb8-9237-bb2707b9d495" class="">2) Key concepts (simple mapping)</h2></div><div style="display:contents" dir="auto"><ul id="e5b56909-dc95-47dd-943a-39ec0c6534f6" class="bulleted-list"><li style="list-style-type:disc"><strong>Identity Provider (IdP):</strong> Where users authenticate (password, MFA, conditional access).</li></ul></div><div style="display:contents" dir="auto"><ul id="70fb267f-86a1-4947-9d27-f88fa550e206" class="bulleted-list"><li style="list-style-type:disc"><strong>IAM Identity Center:</strong> Central place to assign <strong>users/groups</strong> to <strong>AWS accounts</strong> with <strong>permission sets</strong>.</li></ul></div><div style="display:contents" dir="auto"><ul id="05048ddd-0855-4713-89d7-e5d7e1647918" class="bulleted-list"><li style="list-style-type:disc"><strong>Permission set:</strong> Template of permissions (managed policies + optional inline policy + session duration). When assigned, it creates an <strong>IAM role</strong> in the target account.</li></ul></div><div style="display:contents" dir="auto"><ul id="f8cdf265-977e-41f4-8e39-61fef67f2943" class="bulleted-list"><li style="list-style-type:disc"><strong>IAM role:</strong> The actual identity used inside each AWS account to access services.</li></ul></div><div style="display:contents" dir="auto"><ul id="1a45d2b3-f9e3-496b-b411-e3fca8f04223" class="bulleted-list"><li style="list-style-type:disc"><strong>IAM (direct):</strong> Best for <strong>workloads (EC2/Lambda/ECS)</strong> and cross-account access via roles. Not best for humans.</li></ul></div><div style="display:contents" dir="auto"><hr id="ba36ea9e-bf00-445d-ba2b-e5960e58d900"/></div><div style="display:contents" dir="auto"><h2 id="ae3a835d-6f6d-4e71-86e0-5acdda88d022" class="">3) Step-by-step: Implement IAM Identity Center (recommended path)</h2></div><div style="display:contents" dir="auto"><h3 id="72aba42a-1a0e-4956-a7ad-1b60483c21ac" class="">Step 1 — Set up AWS Organizations (multi-account baseline)</h3></div><div style="display:contents" dir="auto"><ol type="1" id="c7620cef-b9fd-4e60-9f2a-740929b7104b" class="numbered-list" start="1"><li>In the <strong>Management account</strong>, open <strong>AWS Organizations</strong>.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="abf12f3b-5f7a-431a-988d-29847b9329c3" class="numbered-list" start="2"><li>Create/verify your Organization.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="f581b8a6-7339-4786-ae99-961f4812bf90" class="numbered-list" start="3"><li>Create accounts (minimum):<div style="display:contents" dir="auto"><ul id="ef3caca2-dfc2-42ed-9509-0725989d61aa" class="bulleted-list"><li style="list-style-type:disc"><strong>Dev</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="6a7ab792-7a38-4c23-8317-458bf8beb9bc" class="bulleted-list"><li style="list-style-type:disc"><strong>Test</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="e2307888-dd39-4389-aa77-75771a980c20" class="bulleted-list"><li style="list-style-type:disc"><strong>Prod</strong></li></ul></div></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="ad18d4ce-1ea9-47ea-8701-fe38250a3f07" class="numbered-list" start="4"><li>(Recommended) Add security foundation accounts:<div style="display:contents" dir="auto"><ul id="70e9e8e9-c287-4ba4-af61-687cd892bf8a" class="bulleted-list"><li style="list-style-type:disc"><strong>Log Archive</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="3fda4fc0-d03b-4836-b5cd-d1ced11c24ed" class="bulleted-list"><li style="list-style-type:disc"><strong>Security Tooling</strong></li></ul></div></li></ol></div><div style="display:contents" dir="auto"><p id="51fcc2cf-83b5-4db2-9026-60ef0155b3d8" class=""><strong>Output:</strong> You have separate AWS accounts for isolation and better access control.</p></div><div style="display:contents" dir="auto"><h3 id="a8bf0f79-fd53-4497-ad3f-ea918939b1df" class="">Step 2 — Enable IAM Identity Center</h3></div><div style="display:contents" dir="auto"><ol type="1" id="a67df899-2738-47c7-a2a1-4589d99e42d9" class="numbered-list" start="1"><li>Open <strong>IAM Identity Center</strong> in the chosen Region.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="c549207f-5e10-4c61-9beb-5af91ffb4eaa" class="numbered-list" start="2"><li>Select <strong>Enable</strong>.</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="01e33b96-f8f2-4d1b-a379-98faafdbaea1" class="numbered-list" start="3"><li>Confirm it is integrated with your Organization.</li></ol></div><div style="display:contents" dir="auto"><p id="1cc51380-a2fa-4bd3-9f69-e2ccdf125498" class=""><strong>Output:</strong> Identity Center becomes the central control plane for workforce access.</p></div><div style="display:contents" dir="auto"><h3 id="4d936421-0488-4277-b65e-a7c4aeaa6473" class="">Step 3 — Configure identity source (IdP integration)</h3></div><div style="display:contents" dir="auto"><p id="bdcb27f5-b662-44dd-a285-93742cef7703" class="">Choose one:</p></div><div style="display:contents" dir="auto"><p id="d7380ad3-ed4f-4cd5-a143-18054c9f7ff4" class=""><strong>Option A: Built-in directory (fastest for labs/small teams)</strong></p></div><div style="display:contents" dir="auto"><ol type="1" id="a7fc4227-55bf-43b9-b220-d4ea9f7bf4c7" class="numbered-list" start="1"><li>IAM Identity Center → <strong>Settings</strong> → <strong>Identity source</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="49651229-af6d-4f19-a515-ba49c80ccd9a" class="numbered-list" start="2"><li>Keep <strong>Identity Center directory</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="f09a0743-49da-4c59-a182-84d4c95b041e" class="numbered-list" start="3"><li>Create users and groups in Identity Center</li></ol></div><div style="display:contents" dir="auto"><p id="5e723dd9-4d3f-45bc-8614-eb5539e8663a" class=""><strong>Option B: External IdP (recommended for enterprises)</strong></p></div><div style="display:contents" dir="auto"><ol type="1" id="146b26be-024a-4701-a26c-6a819a80636e" class="numbered-list" start="1"><li>IAM Identity Center → <strong>Settings</strong> → <strong>Identity source</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="66c44a6c-a7ac-4c3f-b6ad-2786d70b9a23" class="numbered-list" start="2"><li>Choose external IdP method (SAML/OIDC as supported)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="f3485776-8521-4ccd-b921-d7f9c92c44f6" class="numbered-list" start="3"><li>Exchange metadata/config between IdP and AWS</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="2f8cf28a-f88f-4c1e-97e6-45de0952ab4e" class="numbered-list" start="4"><li>Validate login end-to-end</li></ol></div><div style="display:contents" dir="auto"><p id="036c204f-011c-4680-83ac-09cbdb33ee56" class=""><strong>Output:</strong> Users authenticate through your chosen identity system.</p></div><div style="display:contents" dir="auto"><h3 id="2daf0766-e53f-40ad-ad8e-104bf1f224cf" class="">Step 4 — Create users and groups</h3></div><div style="display:contents" dir="auto"><p id="0edad299-ff7e-4b38-b084-4182aee5b772" class="">Create groups aligned to job functions (example):</p></div><div style="display:contents" dir="auto"><ul id="b1b45128-4098-4406-a1f1-4f9a38a69ebf" class="bulleted-list"><li style="list-style-type:disc"><strong>AWS-Admins</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="e1a0a230-660e-45c7-bb95-8a43053038e4" class="bulleted-list"><li style="list-style-type:disc"><strong>AWS-Developers</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="7df0379f-2bc5-4d8a-89b1-65a2ad669ac3" class="bulleted-list"><li style="list-style-type:disc"><strong>AWS-ReadOnly</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="334a1f7a-e8fb-468e-a493-423875dc9341" class="bulleted-list"><li style="list-style-type:disc"><strong>AWS-Billing</strong> (optional)</li></ul></div><div style="display:contents" dir="auto"><p id="83690c6c-2769-494b-be01-fbeebbe77872" class=""><strong>Output:</strong> Group-based access (easier to manage than per-user permissions).</p></div><div style="display:contents" dir="auto"><h3 id="422559c4-e0df-4f62-8316-2eee085bb3dc" class="">Step 5 — Design permission sets (role-based access model)</h3></div><div style="display:contents" dir="auto"><p id="076ca1f2-71e3-46b4-8aed-258555b4b6c3" class="">Create permission sets that match responsibilities.</p></div><div style="display:contents" dir="auto"><p id="c55f1bd6-884a-4ff1-8679-35827bb37355" class=""><strong>Recommended starter set</strong></p></div><div style="display:contents" dir="auto"><ul id="15e7d229-ad63-44b9-9688-965153c0ed47" class="bulleted-list"><li style="list-style-type:disc"><strong>Admin</strong>: <code>AdministratorAccess</code></li></ul></div><div style="display:contents" dir="auto"><ul id="63ef4593-c787-46d6-86ec-8a47fbcd781b" class="bulleted-list"><li style="list-style-type:disc"><strong>PowerUser</strong>: <code>PowerUserAccess</code> + additional restrictions if needed</li></ul></div><div style="display:contents" dir="auto"><ul id="37f75cc2-b91b-4926-b7f9-51a0300c060e" class="bulleted-list"><li style="list-style-type:disc"><strong>ReadOnly</strong>: <code>ReadOnlyAccess</code></li></ul></div><div style="display:contents" dir="auto"><ul id="033857ec-9cfa-4496-81fe-572e678ca330" class="bulleted-list"><li style="list-style-type:disc"><strong>Billing</strong>: <code>Billing</code>/finance appropriate policies (avoid wide service access)</li></ul></div><div style="display:contents" dir="auto"><p id="041a07fe-c8e1-4c08-b66a-a99b13b996f5" class=""><strong>Guardrails</strong></p></div><div style="display:contents" dir="auto"><ul id="01d7ea59-4ab3-427f-8344-4e04c1d7c6de" class="bulleted-list"><li style="list-style-type:disc">Keep permission sets small and reusable</li></ul></div><div style="display:contents" dir="auto"><ul id="b9f041aa-fd64-40e4-92d2-9536758e98b5" class="bulleted-list"><li style="list-style-type:disc">Prefer AWS managed policies as a baseline</li></ul></div><div style="display:contents" dir="auto"><ul id="a87005b5-5042-4457-96e0-0132cb0f8e37" class="bulleted-list"><li style="list-style-type:disc">Add inline policy only when necessary</li></ul></div><div style="display:contents" dir="auto"><ul id="ae4b3fd7-a584-4c4f-8004-826b0ccdbe36" class="bulleted-list"><li style="list-style-type:disc">Set <strong>session duration</strong> thoughtfully (e.g., 1–8 hours)</li></ul></div><div style="display:contents" dir="auto"><p id="00cd85cb-8297-4f4b-9ba2-831aa6895a08" class=""><strong>Output:</strong> Standardized permission “packages” you can assign consistently.</p></div><div style="display:contents" dir="auto"><h3 id="254c4893-8527-43a4-96e2-0229fd6ccfd6" class="">Step 6 — Assign access to accounts (who gets what, where)</h3></div><div style="display:contents" dir="auto"><ol type="1" id="56dc0265-e146-440b-a47a-ceaddf9431a5" class="numbered-list" start="1"><li>IAM Identity Center → <strong>AWS accounts</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="a087545b-b053-4daf-bf8e-a2c7abfd5bfe" class="numbered-list" start="2"><li>Select an account (Dev/Test/Prod)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="17bc3501-e47a-4195-a621-ec6cb98b4889" class="numbered-list" start="3"><li>Click <strong>Assign users or groups</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="79161302-094a-48ce-bfed-78e6d9f1a0ea" class="numbered-list" start="4"><li>Choose the <strong>Group</strong> + <strong>Permission set</strong></li></ol></div><div style="display:contents" dir="auto"><p id="3e3a7bdf-07af-44eb-a409-18242fd18bb7" class=""><strong>Example assignment model</strong></p></div><div style="display:contents" dir="auto"><ul id="2eb6e354-d7bb-4b14-91e5-456139ac7903" class="bulleted-list"><li style="list-style-type:disc">AWS-Admins → Admin → Dev/Test/Prod</li></ul></div><div style="display:contents" dir="auto"><ul id="8d099751-dc2d-437f-be1e-5c08a656df1e" class="bulleted-list"><li style="list-style-type:disc">AWS-Developers → PowerUser → Dev only</li></ul></div><div style="display:contents" dir="auto"><ul id="bf78df49-6a88-4276-8ff6-a91e5c8d2814" class="bulleted-list"><li style="list-style-type:disc">AWS-ReadOnly → ReadOnly → Prod (and optionally all)</li></ul></div><div style="display:contents" dir="auto"><p id="f3c21e90-ff92-4094-9c48-9a17649608d4" class=""><strong>Output:</strong> Users can see accounts in the AWS access portal.</p></div><div style="display:contents" dir="auto"><h3 id="2dff2661-07e3-438e-8b24-6e46280d1712" class="">Step 7 — Understand the role that gets created in each account</h3></div><div style="display:contents" dir="auto"><p id="fff6e736-45a3-4704-8e7e-31eb48c5e991" class="">When you assign a permission set, AWS creates roles like:</p></div><div style="display:contents" dir="auto"><ul id="2d9a696b-8bae-4e40-985b-bcf45695d281" class="bulleted-list"><li style="list-style-type:disc"><code>AWSReservedSSO_&lt;PermissionSetName&gt;_&lt;random&gt;</code></li></ul></div><div style="display:contents" dir="auto"><p id="fec1a481-91e7-4689-9acb-9c5225f86a45" class="">These roles:</p></div><div style="display:contents" dir="auto"><ul id="445e7f7a-707c-4cbf-b58f-200f8e8fe9c2" class="bulleted-list"><li style="list-style-type:disc">Are assumed via the Identity Center login flow</li></ul></div><div style="display:contents" dir="auto"><ul id="1c02045e-86e3-4ee4-b17a-c724befe88ed" class="bulleted-list"><li style="list-style-type:disc">Should generally not be edited directly (manage via permission sets)</li></ul></div><div style="display:contents" dir="auto"><p id="2990533e-bbaf-4d7b-97db-7372f7b6a697" class=""><strong>Output:</strong> Each account now has IAM roles tied to Identity Center assignments.</p></div><div style="display:contents" dir="auto"><h3 id="0b3ee419-9fc6-4a96-b191-9ef4e91c781d" class="">Step 8 — User login flow (console + CLI)</h3></div><div style="display:contents" dir="auto"><p id="3e5073a3-619b-48fa-abc6-06bd9b17d388" class=""><strong>Console</strong></p></div><div style="display:contents" dir="auto"><ol type="1" id="db194d18-29b2-47ac-bf44-62fb3d40b7d2" class="numbered-list" start="1"><li>User opens the <strong>AWS access portal URL</strong></li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="b79fc2dc-87c8-44be-a3b7-cbb11d39f887" class="numbered-list" start="2"><li>Authenticates via IdP</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="ce575f11-21fd-4e23-adba-6b4548ca9064" class="numbered-list" start="3"><li>Picks account + role</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="ae45d219-56b7-4e25-b121-277cdcee7315" class="numbered-list" start="4"><li>Accesses AWS console</li></ol></div><div style="display:contents" dir="auto"><p id="3744e902-8d4f-4992-b9d3-c373ce7977dc" class=""><strong>CLI (recommended)</strong></p></div><div style="display:contents" dir="auto"><ul id="bff665ab-cb68-4c43-b370-2a461744228d" class="bulleted-list"><li style="list-style-type:disc">Use AWS CLI v2 with SSO profiles</li></ul></div><div style="display:contents" dir="auto"><ul id="e7e05117-e4b6-45b8-9ff5-51d72257f243" class="bulleted-list"><li style="list-style-type:disc">Configure per-account profiles; users authenticate once and get temporary credentials</li></ul></div><div style="display:contents" dir="auto"><p id="099cb484-7840-49ed-bbe6-2194cb24d475" class=""><strong>Output:</strong> No long-term access keys needed for humans.</p></div><div style="display:contents" dir="auto"><hr id="a0852ccd-8e76-456b-b5ae-82ab832d4a87"/></div><div style="display:contents" dir="auto"><h2 id="b4c3d0f5-bdcf-4c16-b5dd-7527af32ca6c" class="">4) Direct IAM (traditional) — when to use and how (use sparingly)</h2></div><div style="display:contents" dir="auto"><h3 id="db6987d7-ee9e-452d-9fa1-4504470fc1fc" class="">When direct IAM is acceptable</h3></div><div style="display:contents" dir="auto"><ul id="6bc33d64-fba8-4091-b05c-a48feba7869b" class="bulleted-list"><li style="list-style-type:disc"><strong>Workload identities</strong>: EC2/Lambda/ECS assume roles (best practice)</li></ul></div><div style="display:contents" dir="auto"><ul id="73feeb8d-6564-462f-be12-3a7ccb456a86" class="bulleted-list"><li style="list-style-type:disc"><strong>Break-glass admin</strong>: tightly controlled emergency access</li></ul></div><div style="display:contents" dir="auto"><ul id="9eb896c3-7211-4ac6-b60b-378bde411f87" class="bulleted-list"><li style="list-style-type:disc"><strong>Third-party systems</strong> that cannot use Identity Center (evaluate carefully)</li></ul></div><div style="display:contents" dir="auto"><h3 id="b28ac3ae-20d9-4a68-a207-54b6285fcd47" class="">Avoid for human users</h3></div><div style="display:contents" dir="auto"><ul id="c437981a-9f47-4fbd-8d41-b28df4ba38b1" class="bulleted-list"><li style="list-style-type:disc">Long-term access keys</li></ul></div><div style="display:contents" dir="auto"><ul id="eb3c2876-d494-4781-9813-736a2476645b" class="bulleted-list"><li style="list-style-type:disc">Local IAM users per account</li></ul></div><div style="display:contents" dir="auto"><ul id="7de5d5ea-54ab-444c-a055-2c0ce0580e51" class="bulleted-list"><li style="list-style-type:disc">Manual permission drift</li></ul></div><div style="display:contents" dir="auto"><h3 id="dff287ff-a072-4189-a5d6-99912ad55203" class="">Minimal steps (only if required)</h3></div><div style="display:contents" dir="auto"><ol type="1" id="a443334f-1c93-43b2-91d6-5e023ca29cf4" class="numbered-list" start="1"><li>Create an <strong>IAM role</strong> (preferred) or IAM user (last resort)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="6f3e9ac4-bf31-48f6-9c22-4782c4fc7efa" class="numbered-list" start="2"><li>Attach least-privilege policy</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="8d1144f4-bcd3-4491-b95b-e8e06b1b0c47" class="numbered-list" start="3"><li>Enforce MFA (for console users)</li></ol></div><div style="display:contents" dir="auto"><ol type="1" id="56ecbf01-0008-4b9b-9af1-daa94fb99a6e" class="numbered-list" start="4"><li>Rotate/disable access keys regularly if used</li></ol></div><div style="display:contents" dir="auto"><hr id="d9cb3fbe-6362-4d19-80d3-6641cc4de8da"/></div><div style="display:contents" dir="auto"><h2 id="e802bcbb-bde5-437d-8dec-837479a8df20" class="">5) Best practices (production)</h2></div><div style="display:contents" dir="auto"><h3 id="45df9130-dd1f-4ced-9b79-39c7cd356e99" class="">Security</h3></div><div style="display:contents" dir="auto"><ul id="a8bd0462-e4ef-43ed-bdd3-9e2422902818" class="bulleted-list"><li style="list-style-type:disc">Use <strong>least privilege</strong> (start narrow, expand as needed)</li></ul></div><div style="display:contents" dir="auto"><ul id="978f936f-4da9-4e6c-8a97-3742b14f93d6" class="bulleted-list"><li style="list-style-type:disc">Enforce <strong>MFA</strong> (IdP MFA + root MFA)</li></ul></div><div style="display:contents" dir="auto"><ul id="fe63cfad-5438-4349-a864-cdb36785aaa4" class="bulleted-list"><li style="list-style-type:disc">Disable or remove <strong>long-term access keys</strong> for humans</li></ul></div><div style="display:contents" dir="auto"><ul id="27e23093-b59f-4083-b92c-614ef79bc557" class="bulleted-list"><li style="list-style-type:disc">Use <strong>permission boundaries</strong> and SCPs where appropriate</li></ul></div><div style="display:contents" dir="auto"><h3 id="779fbbe8-469d-4a37-bbb0-52ff0b0725f8" class="">Governance</h3></div><div style="display:contents" dir="auto"><ul id="44e52340-79ae-4944-9463-057443ceee31" class="bulleted-list"><li style="list-style-type:disc">Use <strong>AWS Organizations SCPs</strong> to set account-level guardrails</li></ul></div><div style="display:contents" dir="auto"><ul id="b63800e9-f38a-4a63-8f4b-8a573094313d" class="bulleted-list"><li style="list-style-type:disc">Standardize naming for groups and permission sets</li></ul></div><div style="display:contents" dir="auto"><ul id="b8a5021e-d99f-4417-ad02-50d6c4cad631" class="bulleted-list"><li style="list-style-type:disc">Document access patterns and approval workflow</li></ul></div><div style="display:contents" dir="auto"><h3 id="65f6e66c-e1db-406e-97ec-e71f754eca2b" class="">Observability &amp; audit</h3></div><div style="display:contents" dir="auto"><ul id="d3a518c8-8f4b-4e7e-975f-1fdbbc17c456" class="bulleted-list"><li style="list-style-type:disc">Enable <strong>CloudTrail</strong> in all accounts (centralized)</li></ul></div><div style="display:contents" dir="auto"><ul id="c379b1dc-9004-4b5b-9c39-81409561adc3" class="bulleted-list"><li style="list-style-type:disc">Use <strong>AWS Config</strong> for drift detection</li></ul></div><div style="display:contents" dir="auto"><ul id="4f5a70dd-7679-4693-81b4-6795aabedf78" class="bulleted-list"><li style="list-style-type:disc">Review Identity Center assignments periodically (quarterly access reviews)</li></ul></div><div style="display:contents" dir="auto"><hr id="70777943-3b23-4af4-bf71-f826252fdf2a"/></div><div style="display:contents" dir="auto"><h2 id="bdad052e-f49c-4dfa-8afd-d43686e01536" class="">6) Glossary (quick)</h2></div><div style="display:contents" dir="auto"><ul id="06ddf949-6e5f-4e5c-b52d-a117f2318dea" class="bulleted-list"><li style="list-style-type:disc"><strong>AuthN:</strong> Authentication (who you are)</li></ul></div><div style="display:contents" dir="auto"><ul id="681029f3-3895-4af5-8a99-0a18e2430b17" class="bulleted-list"><li style="list-style-type:disc"><strong>AuthZ:</strong> Authorization (what you can do)</li></ul></div><div style="display:contents" dir="auto"><ul id="76c821a4-1fd9-4c5a-a5c0-0f54e3aa04aa" class="bulleted-list"><li style="list-style-type:disc"><strong>SSO:</strong> Single Sign-On</li></ul></div><div style="display:contents" dir="auto"><ul id="1193ca00-6383-4077-9261-0286d3f2c1c5" class="bulleted-list"><li style="list-style-type:disc"><strong>SCP:</strong> Service Control Policy (Organization-level guardrails)</li></ul></div><div style="display:contents" dir="auto"><hr id="48f9696a-209d-4989-aac1-471e113fbd99"/></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
