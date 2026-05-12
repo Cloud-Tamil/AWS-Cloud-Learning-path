@@ -12,7 +12,7 @@
 
 ---
 
-## 📖 Overview
+### 📖 Overview
 
 > Modern AWS enterprise environments use IAM Identity Center (AWS SSO) to provide centralized authentication, secure temporary credentials, and scalable multi-account access management.
 
@@ -32,7 +32,7 @@ This repository explains how to implement:
 
 ---
 
-## 🌍 What You Will Build
+### 🌍 What You Will Build
 
 ✅ AWS Organizations multi-account setup
 ✅ Centralized authentication using IAM Identity Center
@@ -44,7 +44,7 @@ This repository explains how to implement:
 
 ---
 
-## 🧠 Learning Goals
+### 🧠 Learning Goals
 
 After completing this guide, you will understand:
 
@@ -58,7 +58,7 @@ After completing this guide, you will understand:
   
 ---
 
-## Architecture Flow
+### Architecture Flow
 
 ```texttext
 Employees / Engineers
@@ -80,9 +80,9 @@ AWS Accounts
 ```
 ---
 
-## 🧱 Multi-Account Strategy
+### 🧱 Multi-Account Strategy
 
-### Recommended AWS Organization Structure
+#### Recommended AWS Organization Structure
 
 ```text
 AWS Organization
@@ -95,7 +95,7 @@ AWS Organization
       └── Prod
 ```
 
-## Why Multi-Account?
+#### Why Multi-Account?
 
 * Security isolation
 * Reduced blast radius
@@ -106,9 +106,9 @@ AWS Organization
 
 ---
 
-# 🚀 Step-by-Step Implementation
+### 🚀 Step-by-Step Implementation
 
-## STEP 1 — Create AWS Organization
+#### STEP 1- Create AWS Organization
 
 Navigate to:
 
@@ -146,7 +146,7 @@ Create accounts:
 
 ---
 
-## STEP 2 — Enable IAM Identity Center
+#### STEP 2 - Enable IAM Identity Center
 
 Navigate to:
 
@@ -175,9 +175,9 @@ https://company.awsapps.com/start
 
 ---
 
-## STEP 3 — Configure Identity Provider
+### STEP 3 - Configure Identity Provider
 
-### Supported Identity Providers
+#### Supported Identity Providers
 
 * Microsoft Entra ID (Azure AD)
 * Okta
@@ -185,7 +185,7 @@ https://company.awsapps.com/start
 * Google Workspace
 * Any SAML 2.0 Provider
 
-### Authentication Flow
+#### Authentication Flow
 
 ```text
 User Login
@@ -201,9 +201,9 @@ Temporary credentials issued
 
 ---
 
-## STEP 4 — Create Users & Groups
+### STEP 4 - Create Users & Groups
 
-### Recommended Groups
+#### Recommended Groups
 
 | Group          | Purpose             |
 | -------------- | ------------------- |
@@ -218,7 +218,7 @@ Temporary credentials issued
 
 ---
 
-## STEP 5 — Create Permission Sets
+#### STEP 5 - Create Permission Sets
 
 Navigate:
 
@@ -226,7 +226,7 @@ Navigate:
 IAM Identity Center → Permission Sets
 ```
 
-### Standard Permission Sets
+#### Standard Permission Sets
 
 | Permission Set      | Usage            |
 | ------------------- | ---------------- |
@@ -235,7 +235,7 @@ IAM Identity Center → Permission Sets
 | ReadOnlyAccess      | Audit/view       |
 | Billing             | Finance          |
 
-### Internal AWS Flow
+#### Internal AWS Flow
 
 ```text
 Permission Set
@@ -255,7 +255,7 @@ AWSReservedSSO_AdministratorAccess_xxxxx
 
 ---
 
-## STEP 6 — Assign Access
+#### STEP 6 - Assign Access
 
 Navigate:
 
@@ -269,7 +269,7 @@ Assign:
 * Permission Set
 * AWS Account
 
-### Example RBAC Matrix
+#### Example RBAC Matrix
 
 | Group          | Permission    | Account  |
 | -------------- | ------------- | -------- |
@@ -280,7 +280,7 @@ Assign:
 
 ---
 
-## STEP 7 — AWS Console Login
+#### STEP 7 - AWS Console Login
 
 Portal URL:
 
@@ -298,27 +298,27 @@ AWS automatically issues temporary credentials.
 
 ---
 
-## STEP 8 — Configure AWS CLI SSO
+#### STEP 8 - Configure AWS CLI SSO
 
-### Verify AWS CLI
+#### Verify AWS CLI
 
 ```bash
 aws --version
 ```
 
-### Configure SSO
+#### Configure SSO
 
 ```bash
 aws configure sso
 ```
 
-### Login
+#### Login
 
 ```bash
 aws sso login
 ```
 
-### Test Access
+#### Test Access
 
 ```bash
 aws s3 ls
@@ -326,23 +326,23 @@ aws s3 ls
 
 ---
 
-## 🔐 Security Best Practices
+### 🔐 Security Best Practices
 
-### Identity Security
+#### Identity Security
 
 * Enforce MFA everywhere
 * Avoid root account usage
 * Remove long-term access keys
 * Use temporary credentials
 
-### Governance
+#### Governance
 
 * Use AWS Organizations
 * Implement SCPs
 * Follow least privilege
 * Standardize naming conventions
 
-### Monitoring & Audit
+#### Monitoring & Audit
 
 Enable:
 
@@ -355,7 +355,7 @@ Use centralized logging account.
 
 ---
 
-## ❌ Common Mistakes
+### ❌ Common Mistakes
 
 | Mistake                 | Better Approach            |
 | ----------------------- | -------------------------- |
@@ -367,7 +367,7 @@ Use centralized logging account.
 
 ---
 
-## 🧠 IAM vs IAM Identity Center
+### 🧠 IAM vs IAM Identity Center
 
 | Feature               | IAM Users | IAM Identity Center |
 | --------------------- | --------- | ------------------- |
@@ -380,7 +380,7 @@ Use centralized logging account.
 
 ---
 
-## 🛡 Recommended Enterprise Model
+### 🛡 Recommended Enterprise Model
 
 ```text
 Humans
@@ -400,9 +400,9 @@ AWS Resources
 
 ---
 
-## 📖 Best Places to Learn
+### 📖 Best Places to Learn
 
-### Official AWS Documentation
+#### Official AWS Documentation
 
 * AWS IAM Documentation
 * IAM Identity Center Documentation
@@ -410,7 +410,7 @@ AWS Resources
 * AWS Security Best Practices
 * AWS Well-Architected Framework
 
-### Hands-On Labs
+#### Hands-On Labs
 
 * AWS Skill Builder
 * AWS Workshops
@@ -419,23 +419,23 @@ AWS Resources
 
 ---
 
-## ⭐ Key Takeaways
+### ⭐ Key Takeaways
 
-### Use IAM Identity Center For
+#### Use IAM Identity Center For
 
 ✅ Human users
 ✅ SSO access
 ✅ Multi-account access
 ✅ Temporary credentials
 
-### Use IAM Roles For
+#### Use IAM Roles For
 
 ✅ EC2
 ✅ Lambda
 ✅ ECS Tasks
 ✅ Cross-account access
 
-### Avoid
+#### Avoid
 
 ❌ IAM users for employees
 ❌ Shared AWS accounts
@@ -443,7 +443,7 @@ AWS Resources
 
 ---
 
-## 🛡 Enterprise Security Summary
+### 🛡 Enterprise Security Summary
 
 ```text
 Humans → IAM Identity Center + MFA
