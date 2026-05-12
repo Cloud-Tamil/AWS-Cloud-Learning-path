@@ -1,12 +1,10 @@
 # AWS IAM & IAM Identity Center Implementation Guide
 
-> Enterprise-grade AWS IAM Identity Center (AWS SSO) implementation guide with complete setup instructions, architecture design, RBAC strategy, CLI integration, governance, and production security best practices.
+> ### Enterprise-grade AWS IAM Identity Center (AWS SSO) implementation guide with complete setup instructions, architecture design, RBAC strategy, CLI integration, governance, and production security best practices.
 
 ---
 
-# 🌍 What You Will Build
-
-By following this guide, you will build:
+### 🌍 What You Will Build
 
 ✅ AWS Organizations multi-account environment
 ✅ Centralized authentication using IAM Identity Center
@@ -18,7 +16,7 @@ By following this guide, you will build:
 
 ---
 
-# 🧠 Learning Goals
+### 🧠 Learning Goals
 
 After completing this implementation, you will understand:
 
