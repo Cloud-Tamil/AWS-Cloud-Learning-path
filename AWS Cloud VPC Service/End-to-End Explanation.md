@@ -47,41 +47,7 @@ The purpose of this project is to understand:
 
 A **Virtual Private Cloud (VPC)** is a logically isolated network inside AWS where you deploy cloud resources securely.
 
-Think of it like:
-
-> 🏢 Your own private data center inside AWS.
-
-You control:
-
-* IP address ranges
-* Subnets
-* Internet access
-* Routing
-* Firewalls
-* Security boundaries
-
----
-
-## ❓ Why Do We Need a VPC?
-
-Without a VPC:
-
-❌ All resources would exist in a shared public environment
-❌ No network isolation
-❌ No traffic control
-❌ Weak security boundaries
-
-With a VPC:
-
-✅ Full network isolation
-✅ Better security
-✅ Custom routing
-✅ Controlled internet access
-✅ Enterprise-grade cloud networking
-
----
-
-## 📊 Architecture Components Overview
+### 📊 Architecture Components Overview
 
 | Component        | Purpose                      | Why It Is Important                  |
 | ---------------- | ---------------------------- | ------------------------------------ |
@@ -99,13 +65,30 @@ With a VPC:
 
 ---
 
+## ❓ Why Do We Need a VPC?
+
+Without a VPC:
+
+- ❌ All resources would exist in a shared public environment
+- ❌ No network isolation
+- ❌ No traffic control
+- ❌ Weak security boundaries
+
+With a VPC:
+
+- ✅ Full network isolation
+- ✅ Better security
+- ✅ Custom routing
+- ✅ Controlled internet access
+- ✅ Enterprise-grade cloud networking
+
+---
+
 ## 🌐 Step 1 — Create VPC
 
 ### 📌 Purpose
 
 We create a VPC to establish a secure and isolated cloud network.
-
----
 
 ### 🛠️ Configuration
 
@@ -119,9 +102,7 @@ VPC Dashboard → Create VPC
 | CIDR Block | `10.0.0.0/16` |
 | Tenancy    | `Default`     |
 
----
-
-## ❓ Why `/16` CIDR?
+### ❓ Why `/16` CIDR?
 
 ```text
 10.0.0.0/16
@@ -135,9 +116,7 @@ Provides:
 
 Perfect for production environments.
 
----
-
-## 📘 CIDR Deep Dive
+### 📘 CIDR Deep Dive
 
 | CIDR  | Total IPs | Usable IPs | Usage            |
 | ----- | --------- | ---------- | ---------------- |
@@ -162,9 +141,7 @@ This enables:
 ✅ Better architecture organization
 ✅ Controlled access
 
----
-
-## 🛠️ Subnet Configuration
+### 🛠️ Subnet Configuration
 
 | Subnet             | CIDR          | AZ            | Purpose                  |
 | ------------------ | ------------- | ------------- | ------------------------ |
@@ -172,9 +149,7 @@ This enables:
 | Private-App-Subnet | `10.0.2.0/24` | `ap-south-1a` | Backend applications     |
 | Private-DB-Subnet  | `10.0.3.0/24` | `ap-south-1b` | Database isolation       |
 
----
-
-## ❓ Why Different Subnets?
+### ❓ Why Different Subnets?
 
 | Subnet Type | Why We Need It                      |
 | ----------- | ----------------------------------- |
@@ -182,9 +157,7 @@ This enables:
 | Private App | Protects backend business logic     |
 | Private DB  | Maximum database security           |
 
----
-
-## ❓ Why Separate Availability Zones?
+### ❓ Why Separate Availability Zones?
 
 Using multiple AZs provides:
 
@@ -206,9 +179,7 @@ Without IGW:
 ❌ Public EC2 instances cannot access the internet
 ❌ Users cannot access hosted applications
 
----
-
-## 🛠️ Configuration
+### 🛠️ Configuration
 
 ```bash
 Internet Gateways → Create
@@ -219,9 +190,7 @@ Internet Gateways → Create
 | Name      | `My-IGW` |
 | Attach To | `My-VPC` |
 
----
-
-## 🌐 Internet Gateway Responsibilities
+### 🌐 Internet Gateway Responsibilities
 
 * Enables public internet access
 * Supports inbound and outbound traffic
@@ -240,18 +209,14 @@ Think of route tables like:
 
 > 🛣️ GPS navigation for packets.
 
----
-
-## 🌐 Public Route Table
+### 🌐 Public Route Table
 
 | Destination   | Target | Purpose                    |
 | ------------- | ------ | -------------------------- |
 | `10.0.0.0/16` | local  | Internal VPC communication |
 | `0.0.0.0/0`   | IGW    | Internet access            |
 
----
-
-## 🔒 Private Route Table
+### 🔒 Private Route Table
 
 Initially:
 
@@ -261,9 +226,7 @@ Initially:
 
 Private subnets cannot access the internet yet.
 
----
-
-## ❓ Why Separate Route Tables?
+### ❓ Why Separate Route Tables?
 
 Because:
 
@@ -288,9 +251,7 @@ But they should NOT accept inbound internet traffic.
 
 That is why we use a NAT Gateway.
 
----
-
-## 🛠️ NAT Gateway Configuration
+### 🛠️ NAT Gateway Configuration
 
 | Setting    | Value           |
 | ---------- | --------------- |
@@ -298,9 +259,7 @@ That is why we use a NAT Gateway.
 | Subnet     | `Public-Subnet` |
 | Elastic IP | Required        |
 
----
-
-## ❓ Why NAT Gateway?
+### ❓ Why NAT Gateway?
 
 Without NAT Gateway:
 
@@ -314,9 +273,7 @@ With NAT Gateway:
 ✅ Inbound internet blocked
 ✅ Better security
 
----
-
-## 🔄 NAT Traffic Flow
+### 🔄 NAT Traffic Flow
 
 ```text
 Private EC2
@@ -342,9 +299,7 @@ They control:
 * Allowed ports
 * Allowed sources
 
----
-
-## 🌐 Web Security Group
+### 🌐 Web Security Group
 
 ### Why?
 
@@ -356,17 +311,13 @@ Allows public users to access the website.
 | 443  | HTTPS            |
 | 22   | Secure Admin SSH |
 
----
-
-## ⚙️ App Security Group
+### ⚙️ App Security Group
 
 ### Why?
 
 Ensures only web servers can communicate with backend applications.
 
 Prevents direct public access.
-
----
 
 ## 🗄️ Database Security Group
 
@@ -376,9 +327,7 @@ Protects databases from direct internet access.
 
 Only application servers can communicate with databases.
 
----
-
-## 🔄 Security Group vs NACL
+### 🔄 Security Group vs NACL
 
 | Feature   | Security Group | NACL         |
 | --------- | -------------- | ------------ |
@@ -391,15 +340,11 @@ Only application servers can communicate with databases.
 
 ## 💻 Step 7 — Launch EC2 Instances
 
----
-
-## 🌐 Web Server EC2
+### 🌐 Web Server EC2
 
 ### 📌 Purpose
 
 Hosts frontend/web applications accessible from the internet.
-
----
 
 ### User Data Script
 
@@ -413,8 +358,6 @@ systemctl start httpd
 echo "<h1>Web Server in Public Subnet</h1>" > /var/www/html/index.html
 ```
 
----
-
 ## ⚙️ App Server EC2
 
 ### 📌 Purpose
@@ -422,8 +365,6 @@ echo "<h1>Web Server in Public Subnet</h1>" > /var/www/html/index.html
 Runs backend application logic securely inside private subnet.
 
 No direct public access allowed.
-
----
 
 ### User Data Script
 
@@ -451,9 +392,7 @@ Benefits:
 ✅ Better scalability
 ✅ Security isolation
 
----
-
-## 🛠️ RDS Configuration
+### 🛠️ RDS Configuration
 
 | Setting          | Value     |
 | ---------------- | --------- |
@@ -464,7 +403,7 @@ Benefits:
 
 ---
 
-## 🔐 Security Architecture
+### 🔐 Security Architecture
 
 | Layer           | Protection            |
 | --------------- | --------------------- |
@@ -475,9 +414,7 @@ Benefits:
 | NACLs           | Subnet firewall       |
 | Private Subnets | Hidden infrastructure |
 
----
-
-## 🧪 Connectivity Testing
+### 🧪 Connectivity Testing
 
 | Test                           | Expected Result |
 | ------------------------------ | --------------- |
@@ -487,9 +424,7 @@ Benefits:
 | App → Database                 | ✅ Allowed       |
 | Internet → Database            | ❌ Blocked       |
 
----
-
-## 🚀 Production Best Practices
+### 🚀 Production Best Practices
 
 ### ✅ High Availability
 
@@ -529,15 +464,7 @@ Benefits:
 
 ---
 
-## 🏷️ Project Badge
-
-```markdown
-![Built with AWS VPC](https://img.shields.io/badge/Built%20with-AWS%20VPC-orange)
-```
-
----
-
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Tamilselvan.M**
 
