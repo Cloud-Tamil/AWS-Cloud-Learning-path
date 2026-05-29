@@ -15,35 +15,7 @@
 
 This project demonstrates how to design and build a **Production-Grade AWS VPC Architecture** from scratch using:
 
-* Public and Private Subnets
-* Internet Gateway
-* NAT Gateway
-* Route Tables
-* Security Groups
-* EC2 Instances
-* Amazon RDS
-* High Availability Networking Concepts
-
-This architecture follows real-world cloud networking and security best practices used in enterprise environments.
-
----
-
-## 🎯 Project Goals
-
-The purpose of this project is to understand:
-
-- ✅ AWS Networking Fundamentals
-- ✅ Secure Cloud Architecture Design
-- ✅ Public vs Private Networking
-- ✅ Internet Connectivity in AWS
-- ✅ Routing and Traffic Flow
-- ✅ Security Isolation
-- ✅ Multi-Tier Architecture
-- ✅ Production Best Practices
-
----
-
-## 🧠 What is a VPC?
+### 🧠 What is a VPC?
 
 A **Virtual Private Cloud (VPC)** is a logically isolated network inside AWS where you deploy cloud resources securely.
 
@@ -62,6 +34,23 @@ A **Virtual Private Cloud (VPC)** is a logically isolated network inside AWS whe
 | NACL             | Stateless subnet firewall    | Additional network filtering         |
 | EC2              | Virtual server               | Hosts applications                   |
 | RDS              | Managed database             | Secure database hosting              |
+
+This architecture follows real-world cloud networking and security best practices used in enterprise environments.
+
+---
+
+## 🎯 Project Goals
+
+The purpose of this project is to understand:
+
+- ✅ AWS Networking Fundamentals
+- ✅ Secure Cloud Architecture Design
+- ✅ Public vs Private Networking
+- ✅ Internet Connectivity in AWS
+- ✅ Routing and Traffic Flow
+- ✅ Security Isolation
+- ✅ Multi-Tier Architecture
+- ✅ Production Best Practices
 
 ---
 
